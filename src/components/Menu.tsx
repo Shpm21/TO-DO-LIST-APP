@@ -38,31 +38,31 @@ const Menu: React.FC = () => {
     <IonMenu contentId="main" type="overlay">
       <IonContent>
       <IonList id="inbox-list">
-          <IonListHeader>Actions</IonListHeader>
+          <IonListHeader>Acciones</IonListHeader>
           <IonMenuToggle autoHide={false}>
             <IonItem routerLink='/home'>
               <IonLabel>
-                  Home
+                  Tareas Pendientes
                 </IonLabel>            
             </IonItem>
           </IonMenuToggle>
           <IonMenuToggle autoHide={false}>
             <IonItem routerLink='/addTask'>
               <IonLabel>
-                Add Task
+                Añadir Tarea
               </IonLabel>
             </IonItem>
           </IonMenuToggle>
           <IonMenuToggle autoHide={false}>
             <IonItem routerLink='/addAsignature'>
               <IonLabel>
-                Add Asignature
+                Añadir Asignatura
               </IonLabel>
             </IonItem>
           </IonMenuToggle>
         </IonList>
         <IonList id="inbox-list">
-          <IonListHeader>Asignaturas</IonListHeader>
+          <IonListHeader>Asignaturas Disponibles</IonListHeader>
           {asignatures.map((asign, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
