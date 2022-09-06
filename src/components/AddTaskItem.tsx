@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IonContent, IonInput, IonItem, IonItemDivider, IonLabel, IonList, IonSelect, IonSelectOption } from "@ionic/react";
-import { asignatures } from "./asignatures";
 import { useStorage } from "../useStorage";
+import { Asignature } from "../models/asignature.model";
 
 const AddTaskItem: React.FC = () => {
     const [date, setDate] = useState<string>();
@@ -9,7 +9,17 @@ const AddTaskItem: React.FC = () => {
     const [description, setDescription] = useState<string>();
     const [priority, setPriority] = useState<number>();
     const [asignature, setAsignature] = useState<string>();
-    const { addTask } = useStorage();
+
+    const [asignatures, setAsignatures] = useState<Asignature[]>([]);
+    const { addTask, getAllAsignatures } = useStorage();
+
+    useEffect(() => {
+        const actionGetAllAsignatures = async () => {
+          const allAsignatures = await getAllAsignatures();
+          setAsignatures(allAsignatures);
+        }
+        actionGetAllAsignatures();
+      }, [asignatures]);
 
     const addTaskA = async (name: string, description: string, nameAsignature: string, priority: number, date: string) => {
         await addTask(name, description, nameAsignature, priority, date);
