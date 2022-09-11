@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IonContent, IonInput, IonItem, IonItemDivider, IonLabel, IonList, IonSelect, IonSelectOption } from "@ionic/react";
+import { IonContent, IonInput, IonItem, IonSelect, IonSelectOption } from "@ionic/react";
 import { useStorage } from "../useStorage";
 import { Asignature } from "../models/asignature.model";
 
@@ -41,11 +41,12 @@ const AddTaskItem: React.FC = () => {
         <IonItem>
             <IonSelect placeholder="Asignatura" value={asignature} onIonChange={ev => {setAsignature(ev.detail.value)}}>
                 {
-                    asignatures.map((asignature, index) => {
+                    asignatures? asignatures.map((asignature, index) => {
                         return (
                             <IonSelectOption key={index} value={asignature.name}>{asignature.name}</IonSelectOption>
                         );
-                    })
+                    }) :
+                    <IonSelectOption value="No hay asignaturas">No hay asignaturas</IonSelectOption>
                 }
             </IonSelect>
         </IonItem>

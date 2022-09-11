@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IonContent, IonItem, IonLabel, IonList, IonListHeader } from "@ionic/react";
+import { IonContent, IonItem, IonLabel, IonList } from "@ionic/react";
 import { Task } from "../models/task.model";
 import { useStorage } from "../useStorage";
 
@@ -24,7 +24,7 @@ const ViewTaskFromAsignatureItem: React.FC<ContainerProps> = ({name}) => {
         <IonContent>
             <IonList>
                 {
-                    task.map((task, index) => {
+                    task? task.map((task, index) => {
                         return (
                             task.nameAsignature === name ?
                             <IonItem key={index}>
@@ -38,6 +38,8 @@ const ViewTaskFromAsignatureItem: React.FC<ContainerProps> = ({name}) => {
                             <></>
                         );
                     })
+                    :
+                <></>
                 }
             </IonList>
         </IonContent>

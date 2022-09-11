@@ -2,7 +2,7 @@ import React from "react";
 import { IonButton, IonItem, IonLabel } from "@ionic/react";
 
 import { Asignature } from "../models/asignature.model";
-import { useLocation, useParams } from "react-router";
+import { useLocation } from "react-router";
 import { useStorage } from "../useStorage";
 
 const AsignatureItem: React.FC<{asignature: Asignature}> = ({asignature}) => {

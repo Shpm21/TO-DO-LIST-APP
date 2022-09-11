@@ -11,7 +11,6 @@ import {
   IonNote,
 } from '@ionic/react';
 
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
 import AsignatureItem from './AsignatureItem';
 import { Asignature } from "../models/asignature.model";
@@ -22,7 +21,7 @@ import { useStorage } from '../useStorage';
 
 const Menu: React.FC = () => {
   const [asignatures, setAsignatures] = useState<Asignature[]>([]);
-  const { getAllAsignatures, asignature} = useStorage();
+  const { getAllAsignatures, asignature } = useStorage();
 
   useEffect(() => {
     const actionGetAllAsignatures = async () => {
@@ -53,7 +52,7 @@ const Menu: React.FC = () => {
               </IonLabel>
             </IonItem>
           </IonMenuToggle>
-          <IonMenuToggle autoHide={false}>
+          <IonMenuToggle autoHide={false} onClick={() => console.log('CLICK ADD ASIGNATURE')}>
             <IonItem routerLink='/addAsignature'>
               <IonLabel>
                 Añadir Asignatura
@@ -63,13 +62,15 @@ const Menu: React.FC = () => {
         </IonList>
         <IonList id="inbox-list">
           <IonListHeader>Asignaturas Disponibles</IonListHeader>
-          {asignatures.map((asign, index) => {
+          {asignatures ? asignatures.map((asign, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <AsignatureItem asignature={asign}  />
               </IonMenuToggle>
             );
-          })}
+          }) :
+            <></>
+        }
         </IonList>
       </IonContent>
 

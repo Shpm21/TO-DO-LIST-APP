@@ -5,7 +5,6 @@ import AddAsignatureItem from "../components/AddAsignatureItem";
 
 const AddAsignaturePage: React.FC = () => {
     const { name } = useParams<{ name: string; }>();
-    
     return (
         <IonPage>
         <IonHeader>
