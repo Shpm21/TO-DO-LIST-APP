@@ -1,7 +1,7 @@
-import { Storage } from '@ionic/storage';
 import { useEffect, useState } from 'react';
 import { Asignature } from './models/asignature.model';
 import { Task } from './models/task.model';
+import { capOpenStorageOptions, capValueResult, CapacitorDataStorageSqlite } from 'capacitor-data-storage-sqlite';
 
 const TASK_KEY= 'my-task';
 const ASIGNATURE_KEY = 'my-asignature';
@@ -13,29 +13,32 @@ export const useStorage = () => {
     const [asignature, setAsignature] = useState<Asignature[]>([]);
     const [allAsignature, setAllAsignature] = useState<Asignature[]>([]);
     
-    useEffect(() => {
-        const initStorage = async () => {
-            const newStore = new Storage({
-                name: '_mydb',
-            });
-            const store = await newStore.create();
-            setStore(store);
-            const storedTask = await store.get(TASK_KEY);
-            
-            setTask(storedTask);
-        }
-        initStorage();
-    },[]);
+
+    const taskStoreOptions: capOpenStorageOptions = {
+        database: 'mydb',
+        table: 'task',
+    }
 
     useEffect(() => {
-        const getAsignature = async () => {
-            const asignature = await store?.get(ASIGNATURE_KEY);
-            if (asignature) {
-                setAsignature(asignature);
-            }
+        const initTasks = async () => {
+            await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+            const storeKeyTasks: capValueResult = await CapacitorDataStorageSqlite.get({key: TASK_KEY});
+            const storedTasks = JSON.parse(storeKeyTasks.value);
+            setTask(storedTasks);
         }
-        getAsignature();
+        initTasks();
     }, []);
+
+    useEffect(() => {
+
+        const initAsignatures = async () => {
+            await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+            const storeKeyAsignatures: capValueResult = await CapacitorDataStorageSqlite.get({key: ASIGNATURE_KEY});
+            const storedAsignatures = JSON.parse(storeKeyAsignatures.value);
+            setAsignature(storedAsignatures);
+        }
+        initAsignatures();
+    },[]);
     
 
     const addTask = async (name: string, description: string, nameAsignature: string, priority: number, date: string) => {
@@ -48,25 +51,34 @@ export const useStorage = () => {
             date: date,
             done: false
         };
-        const task = await store?.get(TASK_KEY);
-        await store?.set(TASK_KEY, [...task, newTask]);
+        await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+        const storeKeyTasks: capValueResult = await CapacitorDataStorageSqlite.get({key: TASK_KEY});
+        const storedTasks = JSON.parse(storeKeyTasks.value);
+        const newTasks = [...storedTasks, newTask];
+        await CapacitorDataStorageSqlite.set({key: TASK_KEY, value: JSON.stringify(newTasks)});
     }
 
     const getAllTask = async () => {
-        const storedTask = await store?.get(TASK_KEY);
-        setAllTask(storedTask);
+        await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+        const storeKeyTasks: capValueResult = await CapacitorDataStorageSqlite.get({key: TASK_KEY});
+        const storedTasks = JSON.parse(storeKeyTasks.value);
+        setAllTask(storedTasks);
     }
 
     const deleteTask = async (id: string) => {
-        const task = await store?.get(TASK_KEY);
-        const newTask = task.filter((task: Task) => task.id !== id);
-        await store?.set(TASK_KEY, newTask);
+        await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+        const storeKeyTasks: capValueResult = await CapacitorDataStorageSqlite.get({key: TASK_KEY});
+        const storedTasks = JSON.parse(storeKeyTasks.value);
+        const newTasks = storedTasks.filter((task: Task) => task.id !== id);
+        await CapacitorDataStorageSqlite.set({key: TASK_KEY, value: JSON.stringify(newTasks)});
     
     }
 
     const updateTask = async (id: string, name: string, description: string, nameAsignature: string, priority: number, date: string) => {
-        const task = await store?.get(TASK_KEY);
-        const newTask = task.map((task: Task) => {
+        await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+        const storeKeyTasks: capValueResult = await CapacitorDataStorageSqlite.get({key: TASK_KEY});
+        const storedTasks = JSON.parse(storeKeyTasks.value);
+        const newTask = storedTasks.map((task: Task) => {
             if (task.id === id) {
                 task.name = name;
                 task.description = description;
@@ -76,7 +88,7 @@ export const useStorage = () => {
             }
             return task;
         });
-        await store?.set(TASK_KEY, newTask);
+        await CapacitorDataStorageSqlite.set({key: TASK_KEY, value: JSON.stringify(newTask)});
     }
 
     const addAsignature = async (name: string, credit: number) :Promise<void> => {
@@ -84,31 +96,50 @@ export const useStorage = () => {
             name: name,
             credit: credit
         };
-        const asignature = await store?.get(ASIGNATURE_KEY);
-        await store?.set(ASIGNATURE_KEY, [...asignature, newAsignature]);
+        await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+        const storeKeyAsignatures: capValueResult = await CapacitorDataStorageSqlite.get({key: ASIGNATURE_KEY});
+        const storedAsignatures = JSON.parse(storeKeyAsignatures.value);
+        const newAsignatures = [...storedAsignatures, newAsignature];
+        await CapacitorDataStorageSqlite.set({key: ASIGNATURE_KEY, value: JSON.stringify(newAsignatures)});
         
     }
     
     const getAllAsignatures = async () => {
-        const storedAsignature = await store?.get(ASIGNATURE_KEY);
-        setAllAsignature(storedAsignature);
-        return storedAsignature ? storedAsignature : [];
+        await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+        const storeKeyAsignatures: capValueResult = await CapacitorDataStorageSqlite.get({key: ASIGNATURE_KEY});
+        const storedAsignatures = JSON.parse(storeKeyAsignatures.value);
+        return storedAsignatures;
     }
 
     const deleteAsignature = async (name: string) => {
-        const storedAsignature = await store?.get(ASIGNATURE_KEY);
-        const newAsignatures = storedAsignature.filter((asignature: Asignature) => asignature.name !== name);
-        await store?.set(ASIGNATURE_KEY, newAsignatures);
+
+        await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+        const storeKeyAsignatures: capValueResult = await CapacitorDataStorageSqlite.get({key: ASIGNATURE_KEY});
+        const storedAsignatures = JSON.parse(storeKeyAsignatures.value);
+        const newAsignatures = storedAsignatures.filter((asignature: Asignature) => asignature.name !== name);
+        await CapacitorDataStorageSqlite.set({key: ASIGNATURE_KEY, value: JSON.stringify(newAsignatures)});
     }
 
     const updateAsignature = async (name: string, credit: number) => {
-
+        await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+        const storeKeyAsignatures: capValueResult = await CapacitorDataStorageSqlite.get({key: ASIGNATURE_KEY});
+        const storedAsignatures = JSON.parse(storeKeyAsignatures.value);
+        const newAsignatures = storedAsignatures.map((asignature: Asignature) => {
+            if (asignature.name === name) {
+                asignature.credit = credit;
+            }
+            return asignature;
+        });
+        await CapacitorDataStorageSqlite.set({key: ASIGNATURE_KEY, value: JSON.stringify(newAsignatures)});
     }
 
     const getTaskByNameAsignature = async (name: string) => {
-        const storedTask = await store?.get(TASK_KEY);
-        const taskByNameAsignature = storedTask.filter((task: Task) => task.nameAsignature === name);
-        return taskByNameAsignature;
+        await CapacitorDataStorageSqlite.openStore(taskStoreOptions);
+        const storeKeyTasks: capValueResult = await CapacitorDataStorageSqlite.get({key:  TASK_KEY});
+        const storedTasks= JSON.parse(storeKeyTasks.value);
+
+        const tasksByNameAsignature = storedTasks.filter((task: Task) => task.nameAsignature === name);
+        return tasksByNameAsignature;
     }
 
     return {
