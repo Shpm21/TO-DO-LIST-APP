@@ -1,53 +1,54 @@
 import React, { useEffect, useState } from "react";
 
-import { IonCard, IonContent, IonItem, IonLabel, IonList, IonListHeader, IonReorder, IonReorderGroup, ItemReorderEventDetail } from "@ionic/react";
+import { IonButton, IonCard, IonContent, IonItem, IonLabel, IonList, IonListHeader, IonPopover, IonReorder, IonReorderGroup, ItemReorderEventDetail } from "@ionic/react";
 import { Task } from "../models/task.model";
-import { useStorage } from "../useStorage";
+import ViewTaskInformationItem from "./ViewTaskInformationItem";
+import { useStorage2 } from "../useStorage2";
+import { useLocation } from "react-router";
 
-const ViewToDoListItem: React.FC = () => {
-    const [allTaskA, setAllTaskA]  = useState<Task[]>([]);
-    const { allTask , getAllTask, getTaskByNameAsignature } = useStorage();
+interface Props {
+    tasks: Task[];
+}
 
-    useEffect(() => {
-        const acctionGetAllTask = async () => {
-            await getAllTask();
-            setAllTaskA(allTask);
-        }
-        acctionGetAllTask();
-    });
+const ViewToDoListItem: React.FC<Props> = (Props) => {
+    const [taskAux, setTaskAux] = useState<Task>();
 
-    function doReorder(event: CustomEvent<ItemReorderEventDetail>) {
-        // The `from` and `to` properties contain the index of the item
-        // when the drag started and ended, respectively
-        console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
-      
-        // Finish the reorder and position the item in the DOM based on
-        // where the gesture ended. This method can also be called directly
-        // by the reorder group
-        event.detail.complete();
-      }
+    const { deleteTask } = useStorage2();
+    const pathPag: string = `/task/${taskAux?.id}`;
+    const location = useLocation();
+
+    const deleteT = async (id: string) => {
+        await deleteTask(id);
+    }
     return (
         <IonContent>
-            <IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
-                    {
-                        allTaskA ? allTaskA.map((task, index) => {
-                            return (
-                                <IonReorder>
-                                    <IonItem key={index}>
-                                        <IonLabel key={index}>
-                                            <h2>{task.name}</h2>
-                                            <h3>{task.nameAsignature}</h3>
-                                            <p>{task.description}</p>
-                                        </IonLabel>
-                                    </IonItem>
-                                </IonReorder>
-                            )
-                        })
-                        :
-                        <></>
-                    }
+            <IonList>
+                {
+                    Props.tasks ? Props.tasks.map((task, index) => {
+                        return (
+                            <IonItem >
+                                <IonItem  key={index} id={task.id} onClick={() => setTaskAux(task)}>
+                                    <IonLabel key={index}>
+                                        <h2>{task.name}</h2>
+                                        <h3>{task.nameAsignature}</h3>
+                                        <p>{task.description}</p>
+                                    </IonLabel>
+                                </IonItem>
+                                <IonItem button onClick={ () => deleteT(task.id)}>x<IonItem />
 
-            </IonReorderGroup>
+                                </IonItem>
+                            </IonItem>
+                        )
+                    })
+                    :
+                    <></>
+                    }
+            </IonList>
+            <IonPopover trigger={taskAux?.id}>
+                <IonItem className={location.pathname === pathPag ? 'selected': ''} routerLink={pathPag}>
+                    <IonLabel>ver mas...</IonLabel>
+                </IonItem>
+            </IonPopover>
         </IonContent>
     );
 }
