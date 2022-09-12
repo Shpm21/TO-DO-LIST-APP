@@ -7,7 +7,6 @@ const TASK_KEY= 'my-task';
 const ASIGNATURE_KEY = 'my-asignature';
 
 export const useStorage = () => {
-    const [store, setStore] = useState<Storage>();
     const [task, setTask] = useState<Task[]>([]);
     const [allTask, setAllTask]  = useState<Task[]>([]);
     const [asignature, setAsignature] = useState<Asignature[]>([]);
@@ -26,6 +25,8 @@ export const useStorage = () => {
             const storedTasks = JSON.parse(storeKeyTasks.value);
             setTask(storedTasks);
         }
+
+
         initTasks();
     }, []);
 
