@@ -26,4 +26,3 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
-UseStorage2.ts
