@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IonContent, IonInput, IonItem, IonSelect, IonSelectOption } from "@ionic/react";
-import { useStorage } from "../useStorage";
+import { useStorage2 } from "../useStorage2";
 import { Asignature } from "../models/asignature.model";
 
 const AddTaskItem: React.FC = () => {
@@ -11,7 +11,7 @@ const AddTaskItem: React.FC = () => {
     const [asignature, setAsignature] = useState<string>();
 
     const [asignatures, setAsignatures] = useState<Asignature[]>([]);
-    const { addTask, getAllAsignatures } = useStorage();
+    const { addTask, getAllAsignatures } = useStorage2();
 
     useEffect(() => {
         const actionGetAllAsignatures = async () => {
