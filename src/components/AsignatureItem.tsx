@@ -3,11 +3,11 @@ import { IonButton, IonItem, IonLabel } from "@ionic/react";
 
 import { Asignature } from "../models/asignature.model";
 import { useLocation } from "react-router";
-import { useStorage } from "../useStorage";
+import { useStorage2 } from "../useStorage2";
 
 const AsignatureItem: React.FC<{asignature: Asignature}> = ({asignature}) => {
 
-    const { deleteAsignature } = useStorage();
+    const { deleteAsignature } = useStorage2();
     const deleteA = async (name: string) => {
         await deleteAsignature(name);
     }

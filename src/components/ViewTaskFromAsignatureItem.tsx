@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IonContent, IonItem, IonLabel, IonList } from "@ionic/react";
 import { Task } from "../models/task.model";
-import { useStorage } from "../useStorage";
+import { useStorage2 } from "../useStorage2";
 
 
 
@@ -11,11 +11,11 @@ interface ContainerProps {
   
 const ViewTaskFromAsignatureItem: React.FC<ContainerProps> = ({name}) => {
     const [task, setAllTask] = useState<Task[]>([]);
-    const { getTaskByNameAsignature } = useStorage();
+    const { getTaskByNameAsignature } = useStorage2();
 
     useEffect(() => {
         const actionGetAllTaskFromAsignature = async () => {
-            let auxTask = await getTaskByNameAsignature(name);
+            const auxTask = await getTaskByNameAsignature(name);
             setAllTask(auxTask);
         }
         actionGetAllTaskFromAsignature();

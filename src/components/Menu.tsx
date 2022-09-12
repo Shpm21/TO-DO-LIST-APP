@@ -15,13 +15,13 @@ import './Menu.css';
 import AsignatureItem from './AsignatureItem';
 import { Asignature } from "../models/asignature.model";
 import { useEffect, useState } from 'react';
-import { useStorage } from '../useStorage';
+import { useStorage2 } from '../useStorage2';
 
 
 
 const Menu: React.FC = () => {
   const [asignatures, setAsignatures] = useState<Asignature[]>([]);
-  const { getAllAsignatures, asignature } = useStorage();
+  const { getAllAsignatures, asignature } = useStorage2();
 
   useEffect(() => {
     const actionGetAllAsignatures = async () => {
@@ -29,12 +29,13 @@ const Menu: React.FC = () => {
       setAsignatures(allAsignatures);
     }
     actionGetAllAsignatures();
-  }, [asignatures]);
+
+  });
 
 
 
   return (
-    <IonMenu contentId="main" type="overlay">
+    <IonMenu contentId="main" type="overlay" >
       <IonContent>
       <IonList id="inbox-list">
           <IonListHeader>Acciones</IonListHeader>
@@ -62,14 +63,13 @@ const Menu: React.FC = () => {
         </IonList>
         <IonList id="inbox-list">
           <IonListHeader>Asignaturas Disponibles</IonListHeader>
-          {asignatures ? asignatures.map((asign, index) => {
+          {asignatures.map((asign, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <AsignatureItem asignature={asign}  />
               </IonMenuToggle>
             );
-          }) :
-            <></>
+          })
         }
         </IonList>
       </IonContent>
