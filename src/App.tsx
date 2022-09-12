@@ -25,17 +25,18 @@ import './theme/variables.css';
 import AsignaturePage from './pages/AsignaturePage';
 import AddItemPage from './pages/AddItemPage';
 import AddAsignaturePage from './pages/AddAsignaturePage';
+import TaskPage from './pages/TaskPage';
 
 
 setupIonicReact();
 
 const App: React.FC = () => {
+
   return (
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
+          <IonRouterOutlet id="main" >
             <Route path="/home" component={Page} />
             <Route path="/" exact={true}>
               <Redirect to="/home"/>
@@ -43,7 +44,9 @@ const App: React.FC = () => {
             <Route path="/page/:name" exact={true} component={AsignaturePage} />
             <Route path="/addTask" exact={true} component={AddItemPage} />
             <Route path="/addAsignature" exact={true} component={AddAsignaturePage} />
+            <Route path="/task/:id" exact={true} component={TaskPage} />
           </IonRouterOutlet>
+          <Menu />
         </IonSplitPane>
       </IonReactRouter>
     </IonApp>
