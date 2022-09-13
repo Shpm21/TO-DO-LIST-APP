@@ -46,7 +46,7 @@ const ViewToDoListItem: React.FC<Props> = (Props) => {
             </IonList>
             <IonPopover trigger={taskAux?.id}>
                 <IonItem className={location.pathname === pathPag ? 'selected': ''} routerLink={pathPag}>
-                    <IonLabel>ver mas...</IonLabel>
+                    <IonLabel>Ver más...</IonLabel>
                 </IonItem>
             </IonPopover>
         </IonContent>
