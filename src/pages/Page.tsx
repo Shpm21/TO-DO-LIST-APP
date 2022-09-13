@@ -1,34 +1,34 @@
-import { IonButtons, IonContent, IonHeader, IonInput, IonItem, IonList, IonMenuButton, IonPage, IonRouterOutlet, IonTitle, IonToolbar } from '@ionic/react';
-import { useEffect, useState } from 'react';
-import ViewToDoListItem from '../components/ViewToDoListItem';
-import { Task } from '../models/task.model';
-import { useStorage2 } from '../useStorage2';
-import './Page.css';
-
-const LoadTasks = async () => {
-  const { getAllTask } = useStorage2();
-  const tasks: Task[] = await getAllTask();
-  return tasks!;
-}
-
+import {
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonList,
+  IonMenuButton,
+  IonPage,
+  IonRouterOutlet,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react'
+import { useEffect, useState } from 'react'
+import ViewToDoListItem from '../components/ViewToDoListItem'
+import { Task } from '../models/task.model'
+import { useStorage2 } from '../useStorage2'
+import './Page.css'
 
 const Page: React.FC = () => {
-  const [allTaskA, setAllTaskA]  = useState<Task[]>([]);
-  const { getAllTask } = useStorage2();
+  const { getAllTask } = useStorage2()
+  const [allTask, setTasks] = useState<Task[]>([])
 
-  const loadTasks = async () => {
-    const tasks: Task[] = await getAllTask();
-    setAllTaskA(tasks!);
-  }
-  loadTasks();
   useEffect(() => {
-    const acctionGetAllTask = async () => {
-      const tasks = await getAllTask();
-      setAllTaskA(tasks);
+    const getTaskInformation = async () => {
+      const tasks: Task[] = await getAllTask()
+      setTasks(tasks)
     }
-    acctionGetAllTask();
-  });
-//ACA QUEDE
+    getTaskInformation()
+  })
+
   return (
     <IonPage>
       <IonHeader>
@@ -36,24 +36,23 @@ const Page: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle onClick={async () => {alert(`TASKS: ${JSON.stringify(setAllTaskA(await getAllTask()))}`)}}>Home</IonTitle>
+          <IonTitle>Tareas Pendientes</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large" onClick={() => {alert(`TASKS: ${JSON.stringify(allTaskA)}`)}}>Home</IonTitle>
+            <IonTitle size="large">Home</IonTitle>
           </IonToolbar>
         </IonHeader>
-        {
-          allTaskA.length > 0 ?
-          <ViewToDoListItem tasks={allTaskA} /> :
-          <p> No hay tareas</p>
-        }
+        {allTask.length > 0 ? (
+          <ViewToDoListItem tasks={allTask} />
+        ) : (
+          <p>No hay tareas disponibles</p>
+        )}
       </IonContent>
     </IonPage>
+  )
+}
 
-  );
-};
-
-export default Page;
+export default Page
