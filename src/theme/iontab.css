@@ -1,0 +1,5 @@
+ion-tab-button {
+  font-size: 10px;
+  --background-focused: #5260ff;
+  --color-selected: #5260ff;
+}
