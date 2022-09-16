@@ -8,11 +8,10 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react'
-import { useParams } from 'react-router'
 import AddAsignatureItem from '../components/AddAsignatureItem'
 
 const AddAsignaturePage: React.FC = () => {
-  const { name } = useParams<{ name: string }>()
+  const name: string = 'Añadir Asignatura'
   return (
     <IonPage>
       <IonHeader>

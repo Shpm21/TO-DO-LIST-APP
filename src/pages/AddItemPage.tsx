@@ -8,12 +8,10 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react'
-import { useParams } from 'react-router'
 import AddTaskItem from '../components/AddTaskItem'
 
 const AddItemPage: React.FC = () => {
-  const { name } = useParams<{ name: string }>()
-
+  const name: string = 'Añadir Tarea'
   return (
     <IonPage>
       <IonHeader>
