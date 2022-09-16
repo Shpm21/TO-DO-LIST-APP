@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   IonContent,
   IonInput,
   IonItem,
   IonSelect,
   IonSelectOption,
-} from "@ionic/react";
-import { useStorage2 } from "../useStorage2";
+} from '@ionic/react'
+import { useStorage2 } from '../useStorage2'
+import '../theme/addTask.css'
 
 const AddAsignatureItem: React.FC = () => {
-  const [name, setName] = useState<string>();
-  const [credit, setCredit] = useState<number>();
-  const { addAsignature } = useStorage2();
+  const [name, setName] = useState<string>()
+  const [credit, setCredit] = useState<number>()
+  const { addAsignature } = useStorage2()
   const addAsignatureA = async (name: string, credit: number) => {
-    await addAsignature(name, credit);
-    setName("");
-    setCredit(0);
-  };
+    await addAsignature(name, credit)
+    setName('')
+    setCredit(0)
+  }
 
   return (
     <IonContent>
@@ -27,7 +28,7 @@ const AddAsignatureItem: React.FC = () => {
           value={name}
           type="text"
           onIonChange={(ev) => {
-            setName(ev.detail.value!);
+            setName(ev.detail.value!)
           }}
         />
       </IonItem>
@@ -35,9 +36,10 @@ const AddAsignatureItem: React.FC = () => {
       <IonItem>
         <IonSelect
           placeholder="Créditos"
+          interface="popover"
           value={credit}
           onIonChange={(ev) => {
-            setCredit(parseInt(ev.detail.value));
+            setCredit(parseInt(ev.detail.value))
           }}
         >
           <IonSelectOption value={1}>1</IonSelectOption>
@@ -57,7 +59,7 @@ const AddAsignatureItem: React.FC = () => {
         </IonItem>
       )}
     </IonContent>
-  );
-};
+  )
+}
 
-export default AddAsignatureItem;
+export default AddAsignatureItem
