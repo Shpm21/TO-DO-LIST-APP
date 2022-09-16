@@ -1,74 +1,155 @@
-import React, { useEffect, useState } from "react";
-import { IonContent, IonInput, IonItem, IonSelect, IonSelectOption } from "@ionic/react";
-import { useStorage2 } from "../useStorage2";
-import { Asignature } from "../models/asignature.model";
+import React, { useEffect, useState } from 'react'
+import {
+  IonContent,
+  IonDatetime,
+  IonDatetimeButton,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonModal,
+  IonSelect,
+  IonSelectOption,
+} from '@ionic/react'
+import { useStorage2 } from '../useStorage2'
+import { Asignature } from '../models/asignature.model'
+import '../theme/addTask.css'
 
 const AddTaskItem: React.FC = () => {
-    const [date, setDate] = useState<string>();
-    const [name, setName] = useState<string>();
-    const [description, setDescription] = useState<string>();
-    const [priority, setPriority] = useState<number>();
-    const [asignature, setAsignature] = useState<string>();
+  const [date, setDate] = useState<string>('')
+  const [name, setName] = useState<string>()
+  const [description, setDescription] = useState<string>()
+  const [priority, setPriority] = useState<number>()
+  const [asignature, setAsignature] = useState<string>()
 
-    const [asignatures, setAsignatures] = useState<Asignature[]>([]);
-    const { addTask, getAllAsignatures } = useStorage2();
+  const [asignatures, setAsignatures] = useState<Asignature[]>([])
+  const { addTask, getAllAsignatures } = useStorage2()
 
-    useEffect(() => {
-        const actionGetAllAsignatures = async () => {
-          const allAsignatures = await getAllAsignatures();
-          setAsignatures(allAsignatures);
-        }
-        actionGetAllAsignatures();
-      }, [asignatures]);
-
-    const addTaskA = async (name: string, description: string, nameAsignature: string, priority: number, date: string) => {
-        await addTask(name, description, nameAsignature, priority, date);
-        setName('');
-        setDescription('');
-        setAsignature('');
-        setPriority(0);
-        setDate(' ');
+  useEffect(() => {
+    const getUpdateAsignatures = async () => {
+      const asignaturesN = await getAllAsignatures()
+      setAsignatures(() => asignaturesN)
     }
-
-    return (
-      <IonContent>
-        <IonItem>
-            <IonInput placeholder="Fecha" required={true} type="date" onIonChange={ev => {setDate(JSON.stringify(ev.detail.value))}} />
+    getUpdateAsignatures()
+  }, [])
+  //ERROR NO SE ACTUALIZAN LAS ASIGNATURAS
+  const addTaskA = async (
+    name: string,
+    description: string,
+    nameAsignature: string,
+    priority: number,
+    date: string,
+  ) => {
+    await addTask(name, description, nameAsignature, priority, date)
+    setName('')
+    setDescription('')
+    setAsignature('')
+    setPriority(0)
+    setDate('')
+  }
+  return (
+    <IonContent>
+      <IonItem>
+        <IonDatetimeButton datetime="datetime"></IonDatetimeButton>
+        <IonModal keepContentsMounted={true}>
+          <IonDatetime
+            id="datetime"
+            presentation="date"
+            preferWheel={true}
+            onIonChange={(e) =>
+              setDate(
+                JSON.stringify(
+                  new Date(
+                    e.detail.value!.toLocaleString(),
+                  ).toLocaleDateString(),
+                ),
+              )
+            }
+            showDefaultButtons
+            doneText="Hecho"
+            cancelText="Cancelar"
+            color={'tertiary'}
+          ></IonDatetime>
+        </IonModal>
+        <IonIcon slot="end" name="calendar-outline" color="primary" />
+      </IonItem>
+      <IonItem>
+        <IonInput
+          placeholder="Nombre"
+          required={true}
+          value={name}
+          type="text"
+          onIonChange={(ev) => {
+            setName(ev.detail.value!)
+          }}
+        />
+      </IonItem>
+      <IonItem>
+        <IonSelect
+          interface="popover"
+          placeholder="Asignatura"
+          value={asignature}
+          onIonChange={(ev) => {
+            setAsignature(ev.detail.value)
+          }}
+        >
+          {asignatures ? (
+            asignatures.map((asignature, index) => {
+              return (
+                <IonSelectOption key={index} value={asignature.name}>
+                  {asignature.name}
+                </IonSelectOption>
+              )
+            })
+          ) : (
+            <IonSelectOption value="No hay asignaturas">
+              No hay asignaturas
+            </IonSelectOption>
+          )}
+        </IonSelect>
+      </IonItem>
+      <IonItem>
+        <IonInput
+          placeholder="Descripción"
+          value={description}
+          required={true}
+          onIonChange={(ev) => {
+            setDescription(ev.detail.value!)
+          }}
+        />
+      </IonItem>
+      <IonItem>
+        <IonSelect
+          placeholder="Prioridad"
+          interface="popover"
+          value={priority}
+          onIonChange={(ev) => {
+            setPriority(parseInt(ev.detail.value))
+          }}
+        >
+          <IonSelectOption value={1}>1</IonSelectOption>
+          <IonSelectOption value={2}>2</IonSelectOption>
+          <IonSelectOption value={3}>3</IonSelectOption>
+          <IonSelectOption value={4}>4</IonSelectOption>
+          <IonSelectOption value={5}>5</IonSelectOption>
+        </IonSelect>
+      </IonItem>
+      {name && description && asignature && priority && date ? (
+        <IonItem
+          button
+          onClick={() => {
+            addTaskA(name!, description!, asignature!, priority, date!)
+          }}
+        >
+          Añadir
         </IonItem>
-        <IonItem>
-            <IonInput placeholder="Nombre" required={true} value={name} type="text" onIonChange={ev => { setName(ev.detail.value!)}} />
+      ) : (
+        <IonItem button disabled>
+          Añadir
         </IonItem>
-        <IonItem>
-            <IonSelect placeholder="Asignatura" value={asignature} onIonChange={ev => {setAsignature(ev.detail.value)}}>
-                {
-                    asignatures? asignatures.map((asignature, index) => {
-                        return (
-                            <IonSelectOption key={index} value={asignature.name}>{asignature.name}</IonSelectOption>
-                        );
-                    }) :
-                    <IonSelectOption value="No hay asignaturas">No hay asignaturas</IonSelectOption>
-                }
-            </IonSelect>
-        </IonItem>
-        <IonItem>
-            <IonInput placeholder="Descripción" value={description} required={true} onIonChange={ev => { setDescription(ev.detail.value!)}} />
-        </IonItem>
-        <IonItem>
-            <IonSelect placeholder="Prioridad" value={priority} onIonChange={ev => {setPriority(parseInt(ev.detail.value))}} >
-                <IonSelectOption value={1}>1</IonSelectOption>
-                <IonSelectOption value={2}>2</IonSelectOption>
-                <IonSelectOption value={3}>3</IonSelectOption>
-                <IonSelectOption value={4}>4</IonSelectOption>
-                <IonSelectOption value={5}>5</IonSelectOption>
-            </IonSelect>
-        </IonItem>
-        {
-            name && description && asignature && priority && date ? <IonItem button onClick={() => {addTaskA
-            (name!, description!, asignature!, priority, date!) 
-            }}>Añadir</IonItem> : <IonItem button disabled>Añadir</IonItem>
-        }
-      </IonContent>
-    );
+      )}
+    </IonContent>
+  )
 }
 
-export default AddTaskItem;
+export default AddTaskItem
