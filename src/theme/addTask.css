@@ -1,0 +1,9 @@
+ion-popover {
+  --box-shadow: 0 5px 10px 0 #5260ff;
+  --color: white;
+  --width: 300px;
+}
+
+ion-popover::part(backdrop) {
+  background-color: rgb(114, 114, 114);
+}
