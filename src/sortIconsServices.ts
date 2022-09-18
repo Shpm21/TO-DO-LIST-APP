@@ -14,7 +14,7 @@ export class SortIconsServices {
         'time',
         'alert-circle',
         'warning',
-        'sad-outline'
+        'sad'
     ]
 
     private constructor() {
