@@ -10,6 +10,7 @@ import {
   IonModal,
   IonSelect,
   IonSelectOption,
+  IonText,
 } from '@ionic/react'
 import { useStorage2 } from '../useStorage2'
 import { Asignature } from '../models/asignature.model'
@@ -49,6 +50,9 @@ const AddTaskItem: React.FC = () => {
   }
   return (
     <IonContent>
+      <IonText color={'tertiary'}>
+        <h2>Añadir Tarea</h2>
+      </IonText>
       <IonItem>
         <IonDatetimeButton datetime="datetime"></IonDatetimeButton>
         <IonModal keepContentsMounted={true}>
