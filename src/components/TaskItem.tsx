@@ -7,8 +7,10 @@ import {
   IonLabel,
   IonText,
 } from '@ionic/react'
+import { useLocation } from 'react-router'
 import { Task } from '../models/task.model'
 import { SortIconsServices } from '../sortIconsServices'
+import { useStorage2 } from '../useStorage2'
 
 interface Props {
   task: Task
@@ -52,7 +54,9 @@ const sortIconServices = SortIconsServices.getInstance()
 const TaskItem: React.FC<Props> = (Props) => {
   const { task, index, setTaskAux, setShowPopover, deleteTask } = Props
   const today = new Date(Date.now())
-
+  const { updateTask } = useStorage2()
+  const pathPag: string = `/task/${task.id}`
+  const location = useLocation()
   return (
     <IonItemSliding>
       <IonItemOptions side="start">
@@ -65,12 +69,15 @@ const TaskItem: React.FC<Props> = (Props) => {
         </IonItemOption>
       </IonItemOptions>
       <IonItem
+        detail
         key={index}
         id={task.id}
         onClick={() => {
           setTaskAux(task)
           setShowPopover(false)
         }}
+        className={location.pathname === pathPag ? 'selected' : ''}
+        routerLink={pathPag}
         lines="none"
       >
         <IonLabel key={index}>
@@ -93,20 +100,39 @@ const TaskItem: React.FC<Props> = (Props) => {
           </h3>
           <p>{task.description}</p>
         </IonLabel>
-        <IonIcon
-          name={sortIconServices.getSortIcon(today, task)}
-          color={sortIconServices.getSortIconColor(today, task)}
-        ></IonIcon>
+        {task.done ? (
+          <IonIcon name="checkmark-circle" color="success"></IonIcon>
+        ) : (
+          <IonIcon
+            name={sortIconServices.getSortIcon(today, task)}
+            color={sortIconServices.getSortIconColor(today, task)}
+          ></IonIcon>
+        )}
       </IonItem>
-      <IonItemOptions side="end">
-        <IonItemOption
-          color="tertiary"
-          expandable
-          onClick={() => (task.done = true)}
-        >
-          <IonIcon name="checkmark-circle" size="large"></IonIcon>
-        </IonItemOption>
-      </IonItemOptions>
+      {!task.done ? (
+        <IonItemOptions side="end">
+          <IonItemOption
+            color="tertiary"
+            expandable
+            onClick={() => (
+              updateTask(
+                task.id,
+                task.name,
+                task.description,
+                task.nameAsignature,
+                task.priority,
+                task.date,
+                true,
+              ),
+              setShowPopover(false)
+            )}
+          >
+            <IonIcon name="checkmark-circle" size="large"></IonIcon>
+          </IonItemOption>
+        </IonItemOptions>
+      ) : (
+        <></>
+      )}
     </IonItemSliding>
   )
 }
