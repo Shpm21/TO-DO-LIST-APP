@@ -1,6 +1,7 @@
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import { useEffect, useState } from "react";
 import { Asignature } from "./models/asignature.model";
+import { MiniTask } from "./models/miniTask.model";
 import { Task } from "./models/task.model";
 import { SQLiteServices } from "./sqliteServices";
 
@@ -32,6 +33,10 @@ export const useStorage2 = () => {
       await db.execute(
         "CREATE TABLE IF NOT EXISTS asignature (name TEXT, credit INTEGER)"
       );
+
+      await db.execute(
+        "CREATE TABLE IF NOT EXISTS miniTask (id TEXT PRIMARY KEY, id_task TEXT, title TEXT, description TEXT, priority INTEGER, done BOOL)"
+      )
       setDbConnect(db!);
     };
     connect();
@@ -73,6 +78,40 @@ export const useStorage2 = () => {
     };
     initTasks();
   }, allTask);
+
+  const getMiniTasksByTaskId = async (id: string) => {      
+      await database.open();
+      const result = await database.query("SELECT * FROM miniTask WHERE id_task = ?", [id]);
+      return result?.values!
+
+  }
+
+  const addMiniTask = async (id_task: string, title: string, description: string, priority: number) => {
+    try {
+      
+      await database.open();
+      const newMiniTask: MiniTask ={
+        id: Math.random().toString(36).substring(7),
+        id_task,
+        title,
+        description,
+        priority,
+        done: false
+      }
+      await database.execute(
+        `INSERT INTO miniTask (id, id_task, title, description, priority, done) VALUES ("${newMiniTask.id}", ${newMiniTask.id_task}, "${newMiniTask.title}", "${newMiniTask.description}", ${newMiniTask.priority}, ${newMiniTask.done})`
+      );
+    } catch (error) {
+      alert(error)
+    }
+  }
+
+  const updateMiniTask = async (id: string, id_task: string, title: string, description: string, priority: number, done: boolean) => {
+    await database.open();
+    await database.execute(
+      `UPDATE miniTask SET id_task = ${id_task}, title = ${title}, description = ${description}, priority = ${priority}, done = ${done} WHERE id = ${id}`
+    );
+  }
 
   const addTask = async (
     name: string,
@@ -189,6 +228,7 @@ export const useStorage2 = () => {
     allTask,
     addTask,
     getAllTask,
+    updateTask,
     getTaskByNameAsignature,
     asignature,
     getAllAsignatures,
@@ -196,5 +236,8 @@ export const useStorage2 = () => {
     deleteAsignature,
     deleteTask,
     getTaskById,
+    getMiniTasksByTaskId,
+    addMiniTask,
+    updateMiniTask,
   };
 };
