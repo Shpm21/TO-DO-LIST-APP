@@ -20,10 +20,6 @@ const ViewToDoListItem: React.FC<Props> = (Props) => {
   const [taskAux, setTaskAux] = useState<Task>()
   const [showPopover, setShowPopover] = useState(false)
   const { deleteTask } = useStorage2()
-
-  const pathPag: string = `/task/${taskAux?.id}`
-  const location = useLocation()
-
   return (
     <IonContent fullscreen>
       <IonList>
@@ -43,7 +39,7 @@ const ViewToDoListItem: React.FC<Props> = (Props) => {
           <></>
         )}
       </IonList>
-      <IonPopover trigger={taskAux?.id} hidden={showPopover}>
+      {/* <IonPopover trigger={taskAux?.id} hidden={showPopover}>
         {showPopover ? (
           <></>
         ) : (
@@ -54,7 +50,7 @@ const ViewToDoListItem: React.FC<Props> = (Props) => {
             <IonLabel onClick={() => setShowPopover(true)}>Ver más...</IonLabel>
           </IonItem>
         )}
-      </IonPopover>
+      </IonPopover> */}
     </IonContent>
   )
 }
