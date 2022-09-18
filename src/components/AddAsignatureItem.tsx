@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import {
   IonContent,
+  IonHeader,
   IonInput,
   IonItem,
   IonSelect,
   IonSelectOption,
+  IonText,
 } from '@ionic/react'
 import { useStorage2 } from '../useStorage2'
 import '../theme/addTask.css'
@@ -21,6 +23,9 @@ const AddAsignatureItem: React.FC = () => {
 
   return (
     <IonContent>
+      <IonText color={'tertiary'}>
+        <h2>Añadir Asignatura</h2>
+      </IonText>
       <IonItem>
         <IonInput
           placeholder="Nombre"
