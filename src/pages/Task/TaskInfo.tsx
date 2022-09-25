@@ -16,7 +16,6 @@ import {
   IonSlides,
   IonTitle,
   IonToolbar,
-  RefresherEventDetail,
   useIonAlert,
 } from '@ionic/react'
 import { useEffect, useState } from 'react'
@@ -24,7 +23,7 @@ import { useParams } from 'react-router'
 import AddMiniTask from './components/AddMiniTask/AddMiniTasks'
 import { MiniTask } from '../../models/miniTask.model'
 import { Task } from '../../models/task.model'
-import { useStorage2 } from '../../useStorage2'
+import { useStorage } from '../../services/useStorage'
 import './TaskInfo.css'
 
 interface Props {
@@ -56,7 +55,7 @@ const TaskInfo: React.FC<Props> = (Props) => {
   const [isExecuteForm, setIsExecuteForm] = useState<boolean>(false)
   const [showMiniTask, setShowMiniTask] = useState<boolean>(false)
   const { id } = useParams<{ id: string }>()
-  const { getTaskById, getMiniTasksByTaskId } = useStorage2()
+  const { getTaskById, getMiniTasksByTaskId } = useStorage()
   const [presentAlert] = useIonAlert()
 
   useEffect(() => {

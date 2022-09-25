@@ -3,7 +3,6 @@ import {
   IonContent,
   IonDatetime,
   IonDatetimeButton,
-  IonHeader,
   IonIcon,
   IonInput,
   IonItem,
@@ -12,7 +11,7 @@ import {
   IonSelectOption,
   IonText,
 } from '@ionic/react'
-import { useStorage2 } from '../../../../useStorage2'
+import { useStorage } from '../../../../services/useStorage'
 import { Asignature } from '../../../../models/asignature.model'
 import './addTask.css'
 
@@ -24,7 +23,7 @@ const AddTask: React.FC = () => {
   const [asignature, setAsignature] = useState<string>()
 
   const [asignatures, setAsignatures] = useState<Asignature[]>([])
-  const { addTask, getAllAsignatures } = useStorage2()
+  const { addTask, getAllAsignatures } = useStorage()
 
   useEffect(() => {
     const getUpdateAsignatures = async () => {
@@ -33,7 +32,7 @@ const AddTask: React.FC = () => {
     }
     getUpdateAsignatures()
   }, [])
-  //ERROR NO SE ACTUALIZAN LAS ASIGNATURAS
+
   const addTaskA = async (
     name: string,
     description: string,

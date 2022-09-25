@@ -4,10 +4,9 @@ import {
   IonItem,
   IonSelect,
   IonSelectOption,
-  IonText,
 } from '@ionic/react'
 import { useState } from 'react'
-import { useStorage2 } from '../../../../useStorage2'
+import { useStorage } from '../../../../services/useStorage'
 
 interface Props {
   idTask: string
@@ -19,7 +18,7 @@ const AddMiniTask: React.FC<Props> = (Props) => {
   const [description, setDescription] = useState<string>()
   const [priority, setPriority] = useState<number>()
   const { idTask, setIsExecuteForm } = Props
-  const { addMiniTask } = useStorage2()
+  const { addMiniTask } = useStorage()
 
   const addMiniTaskA = async (
     idTask: string,

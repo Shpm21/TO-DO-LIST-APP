@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { IonContent, IonItem, IonLabel, IonList } from '@ionic/react'
+import { IonContent } from '@ionic/react'
 import { Task } from '../../../../models/task.model'
-import { useStorage2 } from '../../../../useStorage2'
-import ViewToDoListItem from '../../../../components/ViewToDoListItem'
+import { useStorage } from '../../../../services/useStorage'
+import { FilterTasksServices } from '../../../../services/filterTasksServices'
+import FilterViewTask from '../../../../components/FilterViewTask'
 
 interface ContainerProps {
   name: string
+  viewTaskDone: boolean
 }
 
-const ViewTaskFromAsignature: React.FC<ContainerProps> = ({ name }) => {
+const ViewTaskFromAsignature: React.FC<ContainerProps> = ({
+  name,
+  viewTaskDone,
+}) => {
   const [task, setAllTask] = useState<Task[]>([])
-  const { getTaskByNameAsignature } = useStorage2()
+  const { getTaskByNameAsignature } = useStorage()
 
   useEffect(() => {
     const actionGetAllTaskFromAsignature = async () => {
@@ -21,11 +26,7 @@ const ViewTaskFromAsignature: React.FC<ContainerProps> = ({ name }) => {
   })
   return (
     <IonContent>
-      {task.length > 0 ? (
-        <ViewToDoListItem tasks={task} />
-      ) : (
-        <p>No hay tareas disponibles</p>
-      )}
+      <FilterViewTask tasks={task} viewTaskDone={viewTaskDone} />
     </IonContent>
   )
 }

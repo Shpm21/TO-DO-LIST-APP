@@ -8,9 +8,10 @@ import {
   IonText,
 } from '@ionic/react'
 import { useLocation } from 'react-router'
+import { days, months } from '../constants/constants'
 import { Task } from '../models/task.model'
-import { SortIconsServices } from '../sortIconsServices'
-import { useStorage2 } from '../useStorage2'
+import { SortIconsServices } from '../services/sortIconsServices'
+import { useStorage } from '../services/useStorage'
 
 interface Props {
   task: Task
@@ -23,36 +24,12 @@ const formatDate = (date: string) => {
   return dateAux.toLocaleDateString()
 }
 
-const days = [
-  'Domingo',
-  'Lunes',
-  'Martes',
-  'Miércoles',
-  'Jueves',
-  'Viernes',
-  'Sábado',
-]
-const months = [
-  'Enero',
-  'Febrero',
-  'Marzo',
-  'Abril',
-  'Mayo',
-  'Junio',
-  'Julio',
-  'Agosto',
-  'Septiembre',
-  'Octubre',
-  'Noviembre',
-  'Diciembre',
-]
-
 const sortIconServices = SortIconsServices.getInstance()
 
 const TaskItem: React.FC<Props> = (Props) => {
   const { task, index, deleteTask } = Props
   const today = new Date(Date.now())
-  const { updateTask } = useStorage2()
+  const { updateTask } = useStorage()
   const pathPag: string = `/task/${task.id}`
   const location = useLocation()
   return (

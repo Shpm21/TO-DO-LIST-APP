@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  IonButton,
   IonIcon,
   IonItem,
   IonItemOption,
@@ -11,12 +10,12 @@ import {
 
 import { Asignature } from '../models/asignature.model'
 import { useLocation } from 'react-router'
-import { useStorage2 } from '../useStorage2'
+import { useStorage } from '../services/useStorage'
 
 const AsignatureItem: React.FC<{ asignature: Asignature }> = ({
   asignature,
 }) => {
-  const { deleteAsignature } = useStorage2()
+  const { deleteAsignature } = useStorage()
   const deleteA = async (name: string) => {
     await deleteAsignature(name)
   }

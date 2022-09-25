@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
 import {
   IonContent,
-  IonHeader,
   IonInput,
   IonItem,
   IonSelect,
   IonSelectOption,
   IonText,
 } from '@ionic/react'
-import { useStorage2 } from '../../../../useStorage2'
+import { useStorage } from '../../../../services/useStorage'
 import './AddAsignature.css'
 
 const AddAsignatureItem: React.FC = () => {
   const [name, setName] = useState<string>()
   const [credit, setCredit] = useState<number>()
-  const { addAsignature } = useStorage2()
+  const { addAsignature } = useStorage()
   const addAsignatureA = async (name: string, credit: number) => {
     await addAsignature(name, credit)
     setName('')

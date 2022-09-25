@@ -1,10 +1,8 @@
 import {
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
-  IonLabel,
   IonMenuButton,
   IonPage,
   IonTitle,
@@ -12,29 +10,16 @@ import {
   IonToolbar,
 } from '@ionic/react'
 import { useEffect, useState } from 'react'
+import FilterViewTask from '../../components/FilterViewTask'
+import ToggleView from '../../components/ToggleView'
 import ViewToDoListItem from '../../components/ViewToDoListItem'
 import { Task } from '../../models/task.model'
-import { useStorage2 } from '../../useStorage2'
+import { FilterTasksServices } from '../../services/filterTasksServices'
+import { useStorage } from '../../services/useStorage'
 import './Home.css'
 
-const sortDate = (allTask: Task[]) => {
-  allTask.sort((a, b) => {
-    return new Date(a.date).getTime() - new Date(b.date).getTime()
-  })
-}
-
-const filterAllDoneTask = (allTask: Task[]) => {
-  sortDate(allTask)
-  return allTask.filter((task) => task.done)
-}
-
-const filterAllDontDoneTask = (allTask: Task[]) => {
-  sortDate(allTask)
-  return allTask.filter((task) => !task.done)
-}
-
 const Home: React.FC = () => {
-  const { getAllTask } = useStorage2()
+  const { getAllTask } = useStorage()
   const [allTask, setTasks] = useState<Task[]>([])
   const [viewTaskDone, setViewTaskDone] = useState<boolean>(false)
 
@@ -54,18 +39,9 @@ const Home: React.FC = () => {
             <IonMenuButton />
           </IonButtons>
           <IonTitle>Tareas Pendientes</IonTitle>
-          {!viewTaskDone ? (
-            <IonIcon slot="end" name="eye-off" color="tertiary"></IonIcon>
-          ) : (
-            <IonIcon slot="end" name="eye" color="success"></IonIcon>
-          )}
-          <IonToggle
-            slot="end"
-            value="Ver tareas realizadas"
-            onClick={() => {
-              viewTaskDone ? setViewTaskDone(false) : setViewTaskDone(true)
-            }}
-            color="success"
+          <ToggleView
+            viewTaskDone={viewTaskDone}
+            setViewTaskDone={setViewTaskDone}
           />
         </IonToolbar>
       </IonHeader>
@@ -75,17 +51,7 @@ const Home: React.FC = () => {
             <IonTitle size="large">Home</IonTitle>
           </IonToolbar>
         </IonHeader>
-        {viewTaskDone! ? (
-          allTask.length > 0 ? (
-            <ViewToDoListItem tasks={filterAllDoneTask(allTask)} />
-          ) : (
-            <p>No hay tareas disponibles</p>
-          )
-        ) : allTask.length > 0 ? (
-          <ViewToDoListItem tasks={filterAllDontDoneTask(allTask)} />
-        ) : (
-          <p>No hay tareas disponibles</p>
-        )}
+        <FilterViewTask tasks={allTask} viewTaskDone={viewTaskDone} />
       </IonContent>
     </IonPage>
   )

@@ -1,14 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-import {
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPopover,
-} from '@ionic/react'
+import { IonContent, IonList } from '@ionic/react'
 import { Task } from '../models/task.model'
-import { useStorage2 } from '../useStorage2'
+import { useStorage } from '../services/useStorage'
 import TaskItem from './TaskItem'
 
 interface Props {
@@ -16,7 +10,7 @@ interface Props {
 }
 
 const ViewToDoListItem: React.FC<Props> = (Props) => {
-  const { deleteTask } = useStorage2()
+  const { deleteTask } = useStorage()
   return (
     <IonContent fullscreen>
       <IonList>

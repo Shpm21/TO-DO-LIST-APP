@@ -1,10 +1,4 @@
-import {
-  IonButton,
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonPopover,
-} from '@ionic/react'
+import { IonButton, IonItem, IonLabel, IonPopover } from '@ionic/react'
 import { Task } from '../models/task.model'
 
 interface Props {

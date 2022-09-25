@@ -1,12 +1,12 @@
-import { IonContent, IonList, IonListHeader, IonMenuToggle } from '@ionic/react'
+import { IonContent, IonList, IonMenuToggle } from '@ionic/react'
 import { useEffect, useState } from 'react'
 import { Asignature } from '../../../../models/asignature.model'
-import { useStorage2 } from '../../../../useStorage2'
+import { useStorage } from '../../../../services/useStorage'
 import AsignatureItem from '../../../../components/AsignatureItem'
 
 const ShowAllAsignatures: React.FC = () => {
   const [asignatures, setAsignatures] = useState<Asignature[]>([])
-  const { getAllAsignatures } = useStorage2()
+  const { getAllAsignatures } = useStorage()
 
   useEffect(() => {
     const actionGetAllAsignatures = async () => {
