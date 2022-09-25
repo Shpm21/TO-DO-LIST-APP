@@ -60,13 +60,7 @@ const AddTask: React.FC = () => {
             presentation="date"
             preferWheel={true}
             onIonChange={(e) =>
-              setDate(
-                JSON.stringify(
-                  new Date(
-                    e.detail.value!.toLocaleString(),
-                  ).toLocaleDateString(),
-                ),
-              )
+              setDate(JSON.stringify(new Date(e.detail.value!.toString())))
             }
             showDefaultButtons
             doneText="Hecho"
