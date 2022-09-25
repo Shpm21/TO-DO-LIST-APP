@@ -1,10 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Asignature } from './models/asignature.model';
-import { Task } from './models/task.model';
-
 import { Capacitor } from '@capacitor/core';
-import { CapacitorSQLite, SQLiteDBConnection, SQLiteConnection, capSQLiteSet,
-         capSQLiteChanges, capEchoResult, capSQLiteResult 
+import { CapacitorSQLite, SQLiteDBConnection, SQLiteConnection, capEchoResult
         } from '@capacitor-community/sqlite';
 
 export class SQLiteServices {

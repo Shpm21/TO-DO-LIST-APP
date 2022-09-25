@@ -1,13 +1,13 @@
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import { useEffect, useState } from "react";
-import { Asignature } from "./models/asignature.model";
-import { MiniTask } from "./models/miniTask.model";
-import { Task } from "./models/task.model";
+import { Asignature } from "../models/asignature.model";
+import { MiniTask } from "../models/miniTask.model";
+import { Task } from "../models/task.model";
 import { SQLiteServices } from "./sqliteServices";
 
 let database: SQLiteDBConnection;
 
-export const useStorage2 = () => {
+export const useStorage = () => {
   const sqlite = new SQLiteServices();
   sqlite.initializePlugin();
 
