@@ -35,8 +35,10 @@ const AsignatureItem: React.FC<{ asignature: Asignature }> = ({
         </IonItemOption>
       </IonItemOptions>
       <IonItem
+        detail
         className={location.pathname === pathPag ? 'selected' : ''}
         routerLink={pathPag}
+        lines="none"
       >
         <IonLabel>{asignature.name}</IonLabel>
       </IonItem>
