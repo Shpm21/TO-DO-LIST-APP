@@ -8,11 +8,14 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react'
+import { useState } from 'react'
 import { useParams } from 'react-router'
+import ToggleView from '../../components/ToggleView'
 import './Asignature.css'
 import ViewTaskFromAsignature from './components/ViewTaskFromAsignature/ViewTaskFromAsignature'
 
 const Asignature: React.FC = () => {
+  const [viewTaskDone, setViewTaskDone] = useState<boolean>(false)
   const { name } = useParams<{ name: string }>()
   return (
     <IonPage>
@@ -23,6 +26,10 @@ const Asignature: React.FC = () => {
             <IonMenuButton />
           </IonButtons>
           <IonTitle>{name}</IonTitle>
+          <ToggleView
+            viewTaskDone={viewTaskDone}
+            setViewTaskDone={setViewTaskDone}
+          />
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -31,7 +38,7 @@ const Asignature: React.FC = () => {
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ViewTaskFromAsignature name={name} />
+        <ViewTaskFromAsignature name={name} viewTaskDone={viewTaskDone} />
       </IonContent>
     </IonPage>
   )
