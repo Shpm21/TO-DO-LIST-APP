@@ -15,8 +15,6 @@ import { useStorage2 } from '../useStorage2'
 interface Props {
   task: Task
   index: number
-  setTaskAux: (task: Task) => void
-  setShowPopover: (show: boolean) => void
   deleteTask: (id: string) => void
 }
 
@@ -52,7 +50,7 @@ const months = [
 const sortIconServices = SortIconsServices.getInstance()
 
 const TaskItem: React.FC<Props> = (Props) => {
-  const { task, index, setTaskAux, setShowPopover, deleteTask } = Props
+  const { task, index, deleteTask } = Props
   const today = new Date(Date.now())
   const { updateTask } = useStorage2()
   const pathPag: string = `/task/${task.id}`
@@ -72,10 +70,6 @@ const TaskItem: React.FC<Props> = (Props) => {
         detail
         key={index}
         id={task.id}
-        onClick={() => {
-          setTaskAux(task)
-          setShowPopover(false)
-        }}
         className={location.pathname === pathPag ? 'selected' : ''}
         routerLink={pathPag}
         lines="none"
@@ -99,6 +93,7 @@ const TaskItem: React.FC<Props> = (Props) => {
             }
           </h3>
           <p>{task.description}</p>
+          <p>{task.priority}</p>
         </IonLabel>
         {task.done ? (
           <IonIcon name="checkmark-circle" color="success"></IonIcon>
@@ -114,7 +109,7 @@ const TaskItem: React.FC<Props> = (Props) => {
           <IonItemOption
             color="tertiary"
             expandable
-            onClick={() => (
+            onClick={() =>
               updateTask(
                 task.id,
                 task.name,
@@ -123,15 +118,14 @@ const TaskItem: React.FC<Props> = (Props) => {
                 task.priority,
                 task.date,
                 true,
-              ),
-              setShowPopover(false)
-            )}
+              )
+            }
           >
             <IonIcon name="checkmark-circle" size="large"></IonIcon>
           </IonItemOption>
         </IonItemOptions>
       ) : (
-        <></>
+        <IonItemOptions side="end"></IonItemOptions>
       )}
     </IonItemSliding>
   )
