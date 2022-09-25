@@ -143,7 +143,7 @@ export const useStorage2 = () => {
   const getAllTask = async () => {
     await database.open();
     const result = await database.query(
-      "SELECT * FROM TASK ORDER BY date ASC, priority DESC"
+      `SELECT * FROM TASK ORDER BY date`
     );
     return result?.values!;
   };
