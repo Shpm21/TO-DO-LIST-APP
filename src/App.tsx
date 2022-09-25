@@ -11,12 +11,8 @@ import {
 } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
 import { Redirect, Route } from 'react-router-dom'
-import Menu from './components/Menu'
-import AsignaturePage from './pages/AsignaturePage'
-import AddItemPage from './pages/AddItemPage'
-import AddAsignaturePage from './pages/AddAsignaturePage'
-import TaskPage from './pages/TaskPage'
-import Home from './pages/Home'
+import Asignature from './pages/Asignature/Asignature'
+import Home from './pages/Home/Home'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
@@ -37,8 +33,9 @@ import '@ionic/react/css/display.css'
 /* Theme variables */
 import './theme/variables.css'
 import './theme/iontab.css'
-import AsignaturesPage from './pages/AsignaturesPage'
-import ActionsPage from './pages/ActionsPage'
+import Asignatures from './pages/Asignatures/Asignatures'
+import Actions from './pages/Actions/Actions'
+import TaskInfo from './pages/Task/TaskInfo'
 
 setupIonicReact()
 
@@ -49,10 +46,10 @@ const App: React.FC = () => {
         <IonTabs>
           <IonRouterOutlet>
             <Route path="/home" component={Home} exact={true} />
-            <Route path="/actions" component={ActionsPage} exact={true} />
-            <Route path="/asignatures" component={AsignaturesPage} />
-            <Route path="/page/:name" exact={true} component={AsignaturePage} />
-            <Route path="/task/:id" exact={true} component={TaskPage} />
+            <Route path="/actions" component={Actions} exact={true} />
+            <Route path="/asignatures" component={Asignatures} />
+            <Route path="/page/:name" exact={true} component={Asignature} />
+            <Route path="/task/:id" exact={true} component={TaskInfo} />
             <Route
               path="/"
               render={() => <Redirect to="/home" />}
