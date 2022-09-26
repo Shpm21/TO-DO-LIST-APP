@@ -1,4 +1,4 @@
-# Título del Proyecto
+# To-do List App Ionic
 
 Esta aplicación nació por dos razones:
 
