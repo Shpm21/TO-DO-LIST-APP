@@ -25,6 +25,7 @@ import { MiniTask } from '../../models/miniTask.model'
 import { Task } from '../../models/task.model'
 import { useStorage } from '../../services/useStorage'
 import './TaskInfo.css'
+import { DateServices } from '../../services/dateServices'
 
 interface Props {
   task: Task
@@ -100,7 +101,10 @@ const TaskInfo: React.FC<Props> = (Props) => {
           <IonLabel position="stacked">Nombre: {task?.name}</IonLabel>
         </IonItem>
         <IonItem>
-          <IonLabel position="stacked">Fecha de entrega: {task?.date}</IonLabel>
+          <IonLabel position="stacked">
+            Fecha de entrega:{' '}
+            {DateServices.getDateInformationSpanish(task?.date!)}
+          </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel position="stacked">

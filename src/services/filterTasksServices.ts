@@ -1,18 +1,18 @@
 import { Task } from "../models/task.model";
-import { sortDate } from "./dateServices";
+import { DateServices } from "./dateServices";
 
 export class FilterTasksServices {
     private static FilterTasksServicesInstance: FilterTasksServices;
 
-    constructor () {
-        if (FilterTasksServices.FilterTasksServicesInstance) {
-            return FilterTasksServices.FilterTasksServicesInstance;
-        }
-        FilterTasksServices.FilterTasksServicesInstance = this;
+    private constructor () {
     }
 
+    public static getInstance(): FilterTasksServices {
+        if (!FilterTasksServices.FilterTasksServicesInstance) FilterTasksServices.FilterTasksServicesInstance = new FilterTasksServices();
+        return FilterTasksServices.FilterTasksServicesInstance;
+    }
     filterTasks(tasks: Task[], key: string): Task[] {
-        sortDate(tasks);
+        DateServices.sortDate(tasks);
         switch (key) {
             case 'd':
                 return this.filterDoneTasks(tasks);

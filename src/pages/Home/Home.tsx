@@ -2,19 +2,15 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonMenuButton,
   IonPage,
   IonTitle,
-  IonToggle,
   IonToolbar,
 } from '@ionic/react'
 import { useEffect, useState } from 'react'
 import FilterViewTask from '../../components/FilterViewTask'
 import ToggleView from '../../components/ToggleView'
-import ViewToDoListItem from '../../components/ViewToDoListItem'
 import { Task } from '../../models/task.model'
-import { FilterTasksServices } from '../../services/filterTasksServices'
 import { useStorage } from '../../services/useStorage'
 import './Home.css'
 

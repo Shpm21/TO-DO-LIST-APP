@@ -8,8 +8,8 @@ import {
   IonText,
 } from '@ionic/react'
 import { useLocation } from 'react-router'
-import { days, months } from '../constants/constants'
 import { Task } from '../models/task.model'
+import { DateServices } from '../services/dateServices'
 import { SortIconsServices } from '../services/sortIconsServices'
 import { useStorage } from '../services/useStorage'
 
@@ -19,19 +19,14 @@ interface Props {
   deleteTask: (id: string) => void
 }
 
-const formatDate = (date: string) => {
-  const dateAux = new Date(date)
-  return dateAux.toLocaleDateString()
-}
-
 const sortIconServices = SortIconsServices.getInstance()
-
 const TaskItem: React.FC<Props> = (Props) => {
   const { task, index, deleteTask } = Props
   const today = new Date(Date.now())
   const { updateTask } = useStorage()
   const pathPag: string = `/task/${task.id}`
   const location = useLocation()
+
   return (
     <IonItemSliding>
       <IonItemOptions side="start">
@@ -58,14 +53,12 @@ const TaskItem: React.FC<Props> = (Props) => {
               <h2>{task.name}</h2>{' '}
             </IonText>
           }
+
           <h3>{task.nameAsignature}</h3>
           <h3>
             {
               <IonText color={'tertiary'}>
-                {days[new Date(task.date).getDay()]}
-                {'  '}
-                {parseInt(formatDate(task.date).split('/')[1])} de{'  '}
-                {months[new Date(task.date).getMonth()]}
+                {DateServices.getDateInformationSpanish(task.date)}
               </IonText>
             }
           </h3>

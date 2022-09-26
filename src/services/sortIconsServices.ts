@@ -22,10 +22,7 @@ export class SortIconsServices {
     }
 
     public static getInstance(): SortIconsServices {
-        if (!SortIconsServices._instance) {
-            SortIconsServices._instance = new SortIconsServices();
-        }
-
+        if (!SortIconsServices._instance) SortIconsServices._instance = new SortIconsServices();
         return SortIconsServices._instance;
     }
 

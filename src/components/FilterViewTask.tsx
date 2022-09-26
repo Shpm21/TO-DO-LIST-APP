@@ -8,7 +8,7 @@ interface Props {
   tasks: Task[]
 }
 
-const filterTask: FilterTasksServices = new FilterTasksServices()
+const filterTask: FilterTasksServices = FilterTasksServices.getInstance()
 const FilterViewTask: React.FC<Props> = ({ viewTaskDone, tasks }) => {
   return (
     <IonContent>
