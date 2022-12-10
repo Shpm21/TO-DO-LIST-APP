@@ -1,29 +1,35 @@
-import React, { useEffect, useState } from 'react'
 import {
-  IonContent,
+  IonButton,
   IonDatetime,
   IonDatetimeButton,
   IonIcon,
   IonInput,
   IonItem,
+  IonLabel,
   IonModal,
   IonSelect,
   IonSelectOption,
-  IonText,
 } from '@ionic/react'
-import { useStorage } from '../../../../services/useStorage'
+import { useEffect, useState } from 'react'
 import { Asignature } from '../../../../models/asignature.model'
-import './addTask.css'
+import { Task } from '../../../../models/task.model'
+import { useStorage } from '../../../../services/useStorage'
 
-const AddTask: React.FC = () => {
-  const [date, setDate] = useState<string>('')
-  const [name, setName] = useState<string>()
-  const [description, setDescription] = useState<string>()
-  const [priority, setPriority] = useState<number>()
-  const [asignature, setAsignature] = useState<string>()
+interface Props {
+  task: Task
+  isEdit: boolean
+  setIsEdit: (isEdit: boolean) => void
+}
 
+const TaskInfoForm: React.FC<Props> = ({ task, isEdit, setIsEdit }) => {
+  const [name, setName] = useState(task?.name)
+  const [date, setDate] = useState(task?.date)
+  const [nameAsignature, setNameAsignature] = useState(task?.nameAsignature)
+  const [description, setDescription] = useState(task?.description)
+  const [priority, setPriority] = useState<number>(task?.priority)
   const [asignatures, setAsignatures] = useState<Asignature[]>([])
-  const { addTask, getAllAsignatures } = useStorage()
+
+  const { getAllAsignatures, updateTask } = useStorage()
 
   useEffect(() => {
     const getUpdateAsignatures = async () => {
@@ -32,25 +38,41 @@ const AddTask: React.FC = () => {
     }
     getUpdateAsignatures()
   }, [])
-  const addTaskA = async (
+
+  const updateTaskInfo = async (
     name: string,
     description: string,
     nameAsignature: string,
     priority: number,
     date: string,
   ) => {
-    await addTask(name, description, nameAsignature, priority, date)
+    await updateTask(
+      task.id,
+      name,
+      description,
+      nameAsignature,
+      priority,
+      date,
+      task.done,
+    )
     setName('')
     setDescription('')
-    setAsignature('')
+    setNameAsignature('')
     setPriority(0)
     setDate('')
   }
+
   return (
-    <IonContent>
-      <IonText color={'tertiary'}>
-        <h2>Añadir Tarea</h2>
-      </IonText>
+    <>
+      <IonItem>
+        <IonLabel position="stacked">Nombre:</IonLabel>
+        <IonInput
+          value={name}
+          onIonChange={(ev) => {
+            setName(ev.detail.value!)
+          }}
+        />
+      </IonItem>
       <IonItem>
         <IonDatetimeButton datetime="datetime"></IonDatetimeButton>
         <IonModal keepContentsMounted={true}>
@@ -70,23 +92,13 @@ const AddTask: React.FC = () => {
         <IonIcon slot="end" name="calendar-outline" color="primary" />
       </IonItem>
       <IonItem>
-        <IonInput
-          placeholder="Nombre"
-          required={true}
-          value={name}
-          type="text"
-          onIonChange={(ev) => {
-            setName(ev.detail.value!)
-          }}
-        />
-      </IonItem>
-      <IonItem>
+        <IonLabel position="stacked">Asignatura:</IonLabel>
         <IonSelect
           interface="popover"
-          placeholder="Asignatura"
-          value={asignature}
+          placeholder={nameAsignature}
+          value={nameAsignature}
           onIonChange={(ev) => {
-            setAsignature(ev.detail.value)
+            setNameAsignature(ev.detail.value)
           }}
         >
           {asignatures ? (
@@ -105,18 +117,17 @@ const AddTask: React.FC = () => {
         </IonSelect>
       </IonItem>
       <IonItem>
+        <IonLabel class="ion-text-wrap">Descripción:</IonLabel>
         <IonInput
-          placeholder="Descripción"
           value={description}
-          required={true}
           onIonChange={(ev) => {
             setDescription(ev.detail.value!)
           }}
         />
       </IonItem>
       <IonItem>
+        <IonLabel position="stacked">Prioridad:</IonLabel>
         <IonSelect
-          placeholder="Prioridad"
           interface="popover"
           value={priority}
           onIonChange={(ev) => {
@@ -130,22 +141,19 @@ const AddTask: React.FC = () => {
           <IonSelectOption value={5}>5</IonSelectOption>
         </IonSelect>
       </IonItem>
-      {name && description && asignature && priority && date ? (
-        <IonItem
-          button
+      <IonItem>
+        <IonButton
           onClick={() => {
-            addTaskA(name!, description!, asignature!, priority, date!)
+            alert(`DATE: ${date}`)
+            updateTaskInfo(name, description, nameAsignature, priority, date)
+            setIsEdit(false)
           }}
         >
-          Añadir
-        </IonItem>
-      ) : (
-        <IonItem button disabled>
-          Añadir
-        </IonItem>
-      )}
-    </IonContent>
+          Guardar
+        </IonButton>
+      </IonItem>
+    </>
   )
 }
 
-export default AddTask
+export default TaskInfoForm
